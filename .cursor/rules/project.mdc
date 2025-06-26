@@ -1,0 +1,46 @@
+---
+description: Example project configuration for API development
+globs: 
+alwaysApply: true
+---
+
+# API Project Structure Example
+
+This document demonstrates how to organize an API project, including architecture decisions, documentation patterns, and development workflow.
+
+## Project Information
+
+- **Development Approach**: API-First Design 
+- **Repository Structure**: Monorepo using a build system like Turborepo/Nx
+
+## Architecture Overview
+
+- **Frontend**: SPA with TypeScript and modern component architecture
+- **Backend**: RESTful or GraphQL API with comprehensive documentation
+- **Deployment**: Infrastructure as code (Terraform/Pulumi/CloudFormation)
+- **Local Development**: Containerized environment for consistent development
+
+## Key Project Documentation
+
+- `docs/api_specs.md`: API specifications (OpenAPI/Swagger)
+- `docs/architecture.md`: System architecture and design decisions
+- `docs/data_model.md`: Data models and database schema
+- `docs/development_guide.md`: Development workflows and standards
+
+## Development Workflow
+
+1. Review API specifications before implementation
+2. Follow API versioning strategy for backward compatibility
+3. Implement comprehensive testing (unit, integration, e2e)
+4. Document all endpoints with examples
+5. Validate against security best practices
+
+## Project Priorities
+
+1. API consistency and developer experience
+2. Performance and reliability
+3. Security best practices
+4. Maintainable and extensible code
+5. Comprehensive documentation
+
+This example provides a template for setting up API projects with best practices for documentation, architecture, and development workflows.
