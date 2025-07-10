@@ -27,14 +27,6 @@ This repository provides:
 3. Review the prompting techniques in `/prompting` to improve your AI interactions
 4. Adapt the included files and structures to match your specific development needs
 
-## Key Features
-
-- TypeScript API development focus with strict typing
-- RESTful API design patterns following OpenAPI specifications
-- Integration with validation tools like Zod
-- Testing setup with Jest
-- Consistent error handling and documentation practices
-
 ## Usage
 
 Feel free to use these resources in your own projects, modify the files to your own needs, and contribute back if you find improvements or have additional tips!
