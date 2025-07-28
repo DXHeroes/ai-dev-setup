@@ -1,0 +1,42 @@
+---
+description: General coding standards and best practices for the project
+globs: []
+alwaysApply: true
+---
+
+# General Coding Standards
+
+Apply these standards across all code:
+
+## Code Quality
+- Use TypeScript strict mode
+- Prefer explicit types over `any`
+- Use descriptive variable and function names
+- Keep functions focused and small (single responsibility)
+- Add JSDoc comments for public APIs
+
+## File Organization
+- Group related functionality in logical directories
+- Use consistent naming: `kebab-case` for files, `PascalCase` for components/classes
+- Separate concerns: types, validators, transformers, services
+- Keep business logic separate from framework-specific code
+
+## Import Organization
+1. External libraries (React, Prisma, etc.)
+2. Internal utilities and types
+3. Relative imports
+- Use absolute imports where configured
+- Group imports logically with blank lines
+
+## Error Handling
+- Always handle errors explicitly
+- Use typed error classes when possible
+- Provide meaningful error messages
+- Log errors appropriately (see error-handling rule)
+
+## Security Mindset
+- Validate all external inputs
+- Use parameterized queries (Prisma handles this)
+- Never log sensitive data
+- Apply principle of least privilege
+- Use environment variables for secrets

@@ -1,18 +1,20 @@
 # AI Development Kit for Your IDE
 
-A comprehensive toolkit to enhance your development workflow with AI-powered tools like GitHub Copilot. This repository serves as a starting point for your own AI-enhanced development setup, currently focused on Visual Studio Code with GitHub Copilot.
+A comprehensive toolkit to enhance your development workflow with AI-powered tools for IDE's. This repository serves as a starting point for your own AI-enhanced development setup, currently focused on Visual Studio Code with GitHub Copilot and Cursor.
 
 ## Overview
 
 This repository provides:
 
+- **Cursor Rules Integration**: Intelligent, context-aware AI assistance with auto-attached rules for TypeScript API development
 - **GitHub Copilot Integration**: Custom instructions and configuration to tailor AI assistance for TypeScript API development
 - **Advanced Prompting Techniques**: Documentation on creating more effective prompts for AI coding assistants
 - **Workflow Tips**: Best practices for accelerating API development with AI tools
 
 ## Repository Structure
 
-- **`/github`**: Contains resources for customizing GitHub Copilot behavior, including configuration files and usage guidelines
+- **`/.cursor`**: Cursor AI rules that automatically activate based on file context plus example MCP config file
+- **`/.github`**: Contains resources for customizing GitHub Copilot behavior, including configuration files and usage guidelines
 - **`/prompting`**: Documentation on advanced prompting techniques such as:
   - Chain of Thought (CoT)
   - Meta-Prompting

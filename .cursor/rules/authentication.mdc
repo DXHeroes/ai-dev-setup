@@ -1,0 +1,62 @@
+---
+description: Authentication and authorization patterns, JWT handling, and security middleware
+globs: ["**/auth/**", "**/middleware/**", "**/guards/**"]
+alwaysApply: false
+---
+
+# Authentication & Authorization
+
+Follow these security patterns when implementing authentication:
+
+## JWT Token Structure
+Always include these claims in JWT payload:
+- `sub`: User ID (subject)
+- `name`: User's display name
+- `email`: User's email address
+- `roles`: Array of user roles
+- `org`: Organization ID
+- `iat`: Issued at timestamp
+- `exp`: Expiration timestamp
+
+## Authentication Middleware Pattern
+```typescript
+const authMiddleware = async (c, next) => {
+  const token = c.req.header("Authorization")?.replace("Bearer ", "");
+  
+  if (!token) {
+    return c.json({
+      error: {
+        code: "AUTHENTICATION_ERROR",
+        message: "Authentication required",
+      },
+    }, 401);
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    c.set("user", decoded);
+    return next();
+  } catch (error) {
+    return c.json({
+      error: {
+        code: "AUTHENTICATION_ERROR",
+        message: "Invalid or expired token",
+      },
+    }, 401);
+  }
+};
+```
+
+## Authorization Rules
+- **Role-based**: Use `requireRole(role)` middleware for role checks
+- **Organization-based**: Verify `user.org === organizationId` for org resources
+- **Resource ownership**: Check resource ownership before allowing access
+- Always return `403` for authorization failures with `AUTHORIZATION_ERROR` code
+
+## Security Requirements
+- JWT expiration: 15-60 minutes maximum
+- Always use HTTPS in production
+- Implement refresh token rotation
+- Apply rate limiting to auth endpoints
+- Log all authentication events (excluding sensitive data)
+- Never log passwords or tokens

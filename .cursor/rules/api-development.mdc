@@ -1,0 +1,73 @@
+---
+description: API development patterns, CRUD operations, and endpoint structure
+globs: ["**/api/**", "**/routes/**", "**/endpoints/**"]
+alwaysApply: false
+---
+
+# API Development Standards
+
+Follow these patterns when building API endpoints:
+
+## Endpoint Structure (in order)
+1. **Route Definition**: RESTful resource-based naming
+2. **Middleware**: Authentication, logging, rate limiting
+3. **Input Validation**: Zod schemas for params, query, body
+4. **Business Logic**: Extract to service functions
+5. **Response Handling**: Standardized format with proper status
+6. **Error Handling**: Proper error catching with informative messages
+
+## CRUD Operations
+Implement these standard operations for resources:
+- **POST /resources**: Create with validated input
+- **GET /resources**: List with filtering and pagination
+- **GET /resources/:id**: Retrieve single resource
+- **PUT/PATCH /resources/:id**: Update with validation
+- **DELETE /resources/:id**: Remove with authorization checks
+
+## Response Format Standards
+```typescript
+// Success response
+{
+  data: any,          // Response data
+  meta?: {            // Optional metadata
+    page: number,
+    limit: number,
+    total: number,
+    pages: number
+  }
+}
+
+// Error response
+{
+  error: {
+    code: string,     // Error code
+    message: string,  // User-friendly message
+    details?: any     // Additional error details
+  }
+}
+```
+
+## Input Validation Requirements
+- Validate ALL inputs using Zod schemas
+- Route parameters: ID format validation
+- Query parameters: Transform strings to numbers/booleans
+- Request body: Complete schema validation with descriptive errors
+
+## Security Requirements
+- Apply `authMiddleware` to all protected endpoints
+- Use role-based access control where appropriate
+- Validate organization/user ownership for resource access
+- Include CSRF protection for browser clients
+
+## Documentation Requirements
+- Use OpenAPI annotations for all endpoints
+- Document request/response schemas
+- Provide example requests and responses
+- Document all possible error scenarios and status codes
+
+## Testing Requirements
+For each endpoint, include:
+- Unit tests for business logic functions
+- Integration tests for full request/response cycle
+- Test both happy paths and error scenarios
+- Test authentication and authorization cases
