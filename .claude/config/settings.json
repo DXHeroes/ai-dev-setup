@@ -1,0 +1,24 @@
+{
+  "claudeCode": {
+    "version": "1.0",
+    "preferences": {
+      "codeStyle": "typescript",
+      "framework": "api-first",
+      "validation": "zod",
+      "testing": "jest",
+      "documentation": "openapi"
+    },
+    "features": {
+      "autoCompletion": true,
+      "codeGeneration": true,
+      "refactoring": true,
+      "testing": true,
+      "documentation": true
+    },
+    "contextRules": {
+      "includeFileTypes": [".ts", ".js", ".json", ".md", ".yaml", ".yml"],
+      "excludePatterns": ["node_modules/**", "dist/**", "build/**", "*.log"],
+      "maxContextLines": 500
+    }
+  }
+}

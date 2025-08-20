@@ -1,0 +1,30 @@
+{
+  "claude-code.enabled": true,
+  "claude-code.completions.enabled": true,
+  "claude-code.codeGeneration.enabled": true,
+  "claude-code.maxContextLines": 500,
+  "claude-code.excludeFiles": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/*.log",
+    "**/coverage/**",
+    "**/.git/**"
+  ],
+  "claude-code.includeFileTypes": [
+    ".ts",
+    ".js",
+    ".json",
+    ".md",
+    ".yaml",
+    ".yml",
+    ".prisma"
+  ],
+  "claude-code.contextFilesLimit": 10,
+  "claude-code.autoSuggest.enabled": true,
+  "claude-code.codeStyle": "typescript",
+  "claude-code.apiFramework": "hono",
+  "claude-code.validation": "zod",
+  "claude-code.testing": "jest",
+  "claude-code.database": "prisma"
+}
