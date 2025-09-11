@@ -1,3 +1,7 @@
+---
+applyTo: "**"
+---
+
 # Authentication & Authorization Instructions
 
 This document outlines the standardized approach to authentication and authorization across the API.

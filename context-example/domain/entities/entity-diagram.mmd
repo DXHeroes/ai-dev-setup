@@ -1,0 +1,39 @@
+erDiagram
+    USER ||--o{ ACCOUNT : owns
+    ACCOUNT ||--o{ TRANSACTION : has
+    USER {
+        string id
+        string username
+        string email
+        string firstName
+        string lastName
+        date dateOfBirth
+        string phoneNumber
+        string address
+        date createdAt
+        date updatedAt
+    }
+    ACCOUNT {
+        string id
+        string accountNumber
+        string type
+        float balance
+        string currency
+        string status
+        date openedDate
+        date lastActivityDate
+        date createdAt
+        date updatedAt
+    }
+    TRANSACTION {
+        string id
+        string type
+        float amount
+        string currency
+        string description
+        date transactionDate
+        string status
+        string referenceNumber
+        date createdAt
+        date updatedAt
+    }

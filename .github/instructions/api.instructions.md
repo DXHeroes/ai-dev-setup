@@ -1,3 +1,7 @@
+---
+applyTo: "*.api.ts"
+---
+
 # API Development Instructions
 
 This document provides specific guidance for developing API endpoints in this project, including standardized patterns for CRUD operations, error handling, validation, and documentation.

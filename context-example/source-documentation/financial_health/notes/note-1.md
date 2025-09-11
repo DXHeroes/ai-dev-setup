@@ -1,0 +1,1 @@
+PM několikrát zdůraznil, že skóre nesmí působit negativně – i nízké skóre musí být komunikováno motivačně (‘máte prostor ke zlepšení’, ne ‘jste na mizině’). Nutno promyslet textace a dopad na uživatele.

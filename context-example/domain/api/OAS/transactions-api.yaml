@@ -1,0 +1,458 @@
+openapi: 3.1.0
+info:
+  title: Transactions API
+  description: |
+    API for managing financial transactions in the banking system.
+    This API handles creating, retrieving, and managing transactions across accounts.
+  version: "1.0.0"
+  contact:
+    name: API Support
+    email: support@bankingsystem.com
+
+servers:
+  - url: https://api.bankingsystem.com/v1
+    description: Production server
+  - url: https://staging-api.bankingsystem.com/v1
+    description: Staging server
+
+paths:
+  /transactions:
+    get:
+      summary: List transactions
+      description: Retrieves a list of transactions based on filter criteria.
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: accountId
+          in: query
+          description: Filter by account ID
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          description: Filter transactions starting from this date (inclusive)
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Filter transactions until this date (inclusive)
+          schema:
+            type: string
+            format: date
+        - name: type
+          in: query
+          description: Filter by transaction type
+          schema:
+            type: string
+            enum: [Deposit, Withdrawal, Transfer, Payment, Fee, Interest]
+        - name: status
+          in: query
+          description: Filter by transaction status
+          schema:
+            type: string
+            enum: [Pending, Completed, Failed]
+        - name: minAmount
+          in: query
+          description: Filter by minimum amount
+          schema:
+            type: number
+        - name: maxAmount
+          in: query
+          description: Filter by maximum amount
+          schema:
+            type: number
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+      responses:
+        "200":
+          description: List of transactions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Transaction"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+    post:
+      summary: Create a new transaction
+      description: Initiates a new financial transaction between accounts.
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionCreation"
+      responses:
+        "201":
+          description: Transaction created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: Insufficient funds or other business rule violation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                  details:
+                    type: object
+                    properties:
+                      rule:
+                        type: string
+                        description: Business rule that was violated
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /transactions/{transactionId}:
+    get:
+      summary: Get transaction details
+      description: Retrieves details of a specific transaction.
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Unique identifier of the transaction
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Transaction details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: User does not have access to this transaction
+        "404":
+          description: Transaction not found
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /transactions/{transactionId}/status:
+    get:
+      summary: Check transaction status
+      description: Retrieves the current status of a transaction.
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          description: Unique identifier of the transaction
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Transaction status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum: [Pending, Completed, Failed]
+                  updatedAt:
+                    type: string
+                    format: date-time
+                  statusDetails:
+                    type: string
+                    description: Additional details about the status
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: User does not have access to this transaction
+        "404":
+          description: Transaction not found
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+  /accounts/{accountId}/transactions:
+    get:
+      summary: Get transactions for an account
+      description: Retrieves a list of transactions for a specific account.
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          description: Unique identifier of the account
+          schema:
+            type: string
+            format: uuid
+        - name: startDate
+          in: query
+          description: Filter transactions starting from this date (inclusive)
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          in: query
+          description: Filter transactions until this date (inclusive)
+          schema:
+            type: string
+            format: date
+        - name: type
+          in: query
+          description: Filter by transaction type
+          schema:
+            type: string
+            enum: [Deposit, Withdrawal, Transfer, Payment, Fee, Interest]
+        - name: status
+          in: query
+          description: Filter by transaction status
+          schema:
+            type: string
+            enum: [Pending, Completed, Failed]
+        - name: page
+          in: query
+          description: Page number for pagination
+          schema:
+            type: integer
+            default: 1
+        - name: pageSize
+          in: query
+          description: Number of items per page
+          schema:
+            type: integer
+            default: 20
+            maximum: 100
+      responses:
+        "200":
+          description: List of transactions for the specified account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Transaction"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          description: User does not have access to this account
+        "404":
+          description: Account not found
+        "500":
+          $ref: "#/components/responses/ServerError"
+
+components:
+  schemas:
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+          enum: [Deposit, Withdrawal, Transfer, Payment, Fee, Interest]
+        amount:
+          type: number
+          format: float
+        currency:
+          type: string
+          example: "USD"
+        description:
+          type: string
+        transactionDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [Pending, Completed, Failed]
+        referenceNumber:
+          type: string
+          description: External reference number for the transaction
+        sourceAccount:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            accountNumber:
+              type: string
+        destinationAccount:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            accountNumber:
+              type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    TransactionCreation:
+      type: object
+      required:
+        - type
+        - amount
+        - currency
+      properties:
+        type:
+          type: string
+          enum: [Deposit, Withdrawal, Transfer, Payment, Fee, Interest]
+        amount:
+          type: number
+          format: float
+          minimum: 0
+        currency:
+          type: string
+          description: Three-letter ISO currency code
+          example: "USD"
+        description:
+          type: string
+        sourceAccountId:
+          type: string
+          format: uuid
+          description: Account from which funds will be debited (required for withdrawals and transfers)
+        destinationAccountId:
+          type: string
+          format: uuid
+          description: Account to which funds will be credited (required for deposits and transfers)
+        referenceNumber:
+          type: string
+          description: External reference number for the transaction
+
+    Pagination:
+      type: object
+      properties:
+        totalItems:
+          type: integer
+        totalPages:
+          type: integer
+        currentPage:
+          type: integer
+        itemsPerPage:
+          type: integer
+        nextPage:
+          type: ["string", "null"]
+          format: uri
+        prevPage:
+          type: ["string", "null"]
+          format: uri
+
+  responses:
+    BadRequest:
+      description: Bad request due to invalid input
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                    message:
+                      type: string
+
+    Unauthorized:
+      description: Authentication required or token invalid/expired
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+
+    ServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: string
+              message:
+                type: string
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from the /auth/login endpoint
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Transactions
+    description: Financial transaction operations
