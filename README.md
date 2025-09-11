@@ -15,6 +15,7 @@ This repository provides:
 
 - **`/.cursor`**: Cursor AI rules that automatically activate based on file context plus example MCP config file
 - **`/.github`**: Contains resources for customizing GitHub Copilot behavior, including configuration files and usage guidelines
+- **`/context-example`**: Example project structure demonstrating how to organize files for optimal AI assistance
 - **`/prompting`**: Documentation on advanced prompting techniques such as:
   - Chain of Thought (CoT)
   - Meta-Prompting
